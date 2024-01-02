@@ -52,8 +52,8 @@ function Surround._get_closing_char(char)
 end
 
 function Surround._set_keymaps()
-    local default_keys = { "{", "}", "[", "]", "(", ")", "<", ">", "'", '"' }
-    for _, key in ipairs(default_keys) do
+    local keys = Config.opts.surround_chars
+    for _, key in ipairs(keys) do
         vim.keymap.set("v", key, function()
             Surround.surround(key)
         end, { desc = "[visual-surround] Surround selection with " .. key })

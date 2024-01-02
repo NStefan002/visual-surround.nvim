@@ -2,9 +2,11 @@ local Config = {}
 
 function Config.get_default_config()
     return {
-        -- if set to true, user must manually add keymaps
+        -- if set to true, the user must manually add keymaps
         use_default_keymaps = true,
-        -- wheather to exit visual mode after adding surround
+        -- will be ignored if use_default_keymaps is set to false
+        surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"' },
+        -- whether to exit visual mode after adding surround
         exit_visual_mode = false,
     }
 end
