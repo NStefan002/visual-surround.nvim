@@ -10,10 +10,10 @@ with parentheses and just press the `(` or `)` key.
 If you want additional functionalities, such as deleting surrounding characters, changing surrounding characters, or some other
 advanced features, check out two of the plugins mentioned above.
 
+## 📋 Installation
+
 **NOTE:** `visual-surround` works out of the box, you don't have to call `setup()` function if you don't want to change any settings.
 It can be lazy-loaded (use something like `event = "BufEnter"`).
-
-## 📋 Installation
 
 [lazy](https://github.com/folke/lazy.nvim):
 
