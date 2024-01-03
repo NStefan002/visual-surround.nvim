@@ -1,4 +1,4 @@
-*visual-surround.nvim.txt*   For Neovim >= 0.9.1  Last change: 2024 January 02
+*visual-surround.nvim.txt*   For Neovim >= 0.9.1  Last change: 2024 January 03
 
 ==============================================================================
 Table of Contents                     *visual-surround.nvim-table-of-contents*
@@ -23,12 +23,12 @@ If you want additional functionalities, such as deleting surrounding
 characters, changing surrounding characters, or some other advanced features,
 check out two of the plugins mentioned above.
 
+
+INSTALLATION          *visual-surround.nvim-visual-surround.nvim-installation*
+
 **NOTE:** `visual-surround` works out of the box, you don’t have to call
 `setup()` function if you don’t want to change any settings. It can be
 lazy-loaded (use something like `event = "BufEnter"`).
-
-
-INSTALLATION          *visual-surround.nvim-visual-surround.nvim-installation*
 
 lazy <https://github.com/folke/lazy.nvim>
 
