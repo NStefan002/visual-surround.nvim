@@ -6,12 +6,6 @@ local Surround = {}
 ---@param char string
 ---@return string
 function Surround._get_opening_char(char)
-    if char == "'" then
-        return "'"
-    end
-    if char == '"' then
-        return '"'
-    end
     if char == "(" or char == ")" then
         return "("
     end
@@ -30,12 +24,6 @@ end
 ---@param char string
 ---@return string
 function Surround._get_closing_char(char)
-    if char == "'" then
-        return "'"
-    end
-    if char == '"' then
-        return '"'
-    end
     if char == "(" or char == ")" then
         return ")"
     end
