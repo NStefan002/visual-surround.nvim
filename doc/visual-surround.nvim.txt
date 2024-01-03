@@ -4,6 +4,7 @@
 Table of Contents                     *visual-surround.nvim-table-of-contents*
 
 1. Visual-surround.nvim            |visual-surround.nvim-visual-surround.nvim|
+  - Showcase              |visual-surround.nvim-visual-surround.nvim-showcase|
   - Installation      |visual-surround.nvim-visual-surround.nvim-installation|
   - Configuration    |visual-surround.nvim-visual-surround.nvim-configuration|
 
@@ -22,6 +23,12 @@ you want to surround with parentheses and just press the `(` or `)` key.
 If you want additional functionalities, such as deleting surrounding
 characters, changing surrounding characters, or some other advanced features,
 check out two of the plugins mentioned above.
+
+
+SHOWCASE                  *visual-surround.nvim-visual-surround.nvim-showcase*
+
+visual-surround_showcase.webm
+<https://github.com/NStefan002/visual-surround.nvim/assets/100767853/f40f0d4c-bcb2-4f08-89a5-55ee6e188576>
 
 
 INSTALLATION          *visual-surround.nvim-visual-surround.nvim-installation*
