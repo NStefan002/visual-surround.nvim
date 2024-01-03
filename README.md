@@ -10,6 +10,10 @@ with parentheses and just press the `(` or `)` key.
 If you want additional functionalities, such as deleting surrounding characters, changing surrounding characters, or some other
 advanced features, check out two of the plugins mentioned above.
 
+## 📺 Showcase
+
+[visual-surround_showcase.webm](https://github.com/NStefan002/visual-surround.nvim/assets/100767853/f40f0d4c-bcb2-4f08-89a5-55ee6e188576)
+
 ## 📋 Installation
 
 **NOTE:** `visual-surround` works out of the box, you don't have to call `setup()` function if you don't want to change any settings.
