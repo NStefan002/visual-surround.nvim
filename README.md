@@ -16,9 +16,6 @@ advanced features, check out two of the plugins mentioned above.
 
 ## 📋 Installation
 
-**NOTE:** `visual-surround` works out of the box, you don't have to call `setup()` function if you don't want to change any settings.
-It can be lazy-loaded (use something like `event = "BufEnter"`).
-
 [lazy](https://github.com/folke/lazy.nvim):
 
 ```lua
@@ -29,6 +26,8 @@ It can be lazy-loaded (use something like `event = "BufEnter"`).
             -- your config
         })
     end,
+    -- or if you don't want to change defaults
+    -- config = true
 }
 ```
 
@@ -87,9 +86,10 @@ require("visual-surround").setup({
 
 local preffered_mapping_prefix = "s"
 local surround_chars = { "{", "[", "(", "'", '"', "<" }
+local surround = require("visual-surround").surround
 for _, key in pairs(surround_chars) do
     vim.keymap.set("v", preffered_mapping_prefix .. key, function()
-        Surround.surround(key)
+        surround(key)
     end, { desc = "[visual-surround] Surround selection with " .. key })
 end
 ```

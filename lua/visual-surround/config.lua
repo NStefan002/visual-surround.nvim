@@ -11,7 +11,7 @@ function Config.get_default_config()
     }
 end
 
-Config.opts = {}
+Config.opts = Config.get_default_config()
 
 ---@param user_config? table
 function Config.override_config(user_config)
