@@ -7,7 +7,7 @@ function Config.get_default_config()
         -- will be ignored if use_default_keymaps is set to false
         surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"' },
         -- whether to exit visual mode after adding surround
-        exit_visual_mode = false,
+        exit_visual_mode = true,
     }
 end
 
