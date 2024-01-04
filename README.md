@@ -12,7 +12,7 @@ advanced features, check out two of the plugins mentioned above.
 
 ## 📺 Showcase
 
-[visual-surround_showcase.webm](https://github.com/NStefan002/visual-surround.nvim/assets/100767853/f40f0d4c-bcb2-4f08-89a5-55ee6e188576)
+![visual-surround_showcase](https://github.com/NStefan002/visual-surround.nvim/assets/100767853/c87b391d-ddc0-4190-adb5-97a7411dae3c)
 
 ## 📋 Installation
 
