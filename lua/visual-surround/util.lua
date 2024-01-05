@@ -38,6 +38,8 @@ function Util.get_bounds()
         else
             vcol_start, vcol_end = vcol_end, vcol_start
         end
+    elseif vline_start == vline_end and vcol_start > vcol_end then
+        vcol_start, vcol_end = vcol_end, vcol_start
     end
 
     return {
