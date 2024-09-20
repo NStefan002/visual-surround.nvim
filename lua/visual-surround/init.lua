@@ -59,20 +59,16 @@ function Surround.surround(char)
         if bounds.vcol_end < bounds.vcol_start then
             bounds.vcol_start, bounds.vcol_end = bounds.vcol_end, bounds.vcol_start
         end
-        print(bounds.vline_start, bounds.vline_end, bounds.vcol_start, bounds.vcol_end)
         for n = 1, #lines do
             local line_mid = string.sub(lines[n], bounds.vcol_start, bounds.vcol_end)
             local trimmed_line = Util.trim(line_mid)
-            print("trimmed_line:", trimmed_line)
             if trimmed_line == "" then
                 -- Do nothing, skip iteration, continue, goto next, etc.
             else
-                print("pre:", line_mid)
                 line_mid = string.rep(" ", Util.num_of_leading_whitespaces(line_mid), "")
                     .. opening_char
                     .. trimmed_line
                 line_mid = line_mid .. closing_char
-                print("post:", line_mid)
 
                 -- line = start mid end
                 lines[n] = string.sub(lines[n], 1, bounds.vcol_start - 1)
