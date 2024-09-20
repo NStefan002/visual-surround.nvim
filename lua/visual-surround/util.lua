@@ -13,19 +13,17 @@ function Util.info(msg)
     vim.notify("\n" .. msg, vim.log.levels.INFO, { title = "Speedtyper" })
 end
 
+---@param mode string
 ---@return { vline_start: integer, vcol_start: integer, vline_end: integer, vcol_end: integer }
-function Util.get_bounds()
+function Util.get_bounds(mode)
     local vline_start = vim.fn.line("v")
     local vcol_start = vim.fn.col("v")
     local vline_end = vim.fn.line(".")
     local vcol_end = vim.fn.col(".")
-    local mode = vim.api.nvim_get_mode().mode
 
     if mode == "V" then
         vcol_start = 1
         vcol_end = vim.fn.col("$") - 1
-    elseif mode ~= "v" then
-        error("Only visual and visual line modes are supported.")
     end
 
     if vline_start > vline_end then
