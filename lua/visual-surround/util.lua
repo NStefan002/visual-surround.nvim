@@ -40,6 +40,11 @@ function Util.get_bounds(mode)
         vcol_start, vcol_end = vcol_end, vcol_start
     end
 
+    -- ajust the end column if the cursor is one character after the end of the line (visual mode enables this)
+    if vcol_end == vim.fn.col("$") then
+        vcol_end = vcol_end - 1
+    end
+
     return {
         vline_start = vline_start,
         vcol_start = vcol_start,
