@@ -62,9 +62,7 @@ function Surround.surround(char)
         for n = 1, #lines do
             local line_mid = string.sub(lines[n], bounds.vcol_start, bounds.vcol_end)
             local trimmed_line = Util.trim(line_mid)
-            if trimmed_line == "" then
-                -- Do nothing, skip iteration, continue, goto next, etc.
-            else
+            if trimmed_line ~= "" then
                 line_mid = string.rep(" ", Util.num_of_leading_whitespaces(line_mid), "")
                     .. opening_char
                     .. trimmed_line
