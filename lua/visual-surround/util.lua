@@ -3,14 +3,14 @@ local Util = {}
 ---@param msg string
 function Util.error(msg)
     -- "\n" for nvim configs that don't use nvim-notify
-    vim.notify("\n" .. msg, vim.log.levels.ERROR, { title = "Speedtyper" })
+    vim.notify("\n" .. msg, vim.log.levels.ERROR, { title = "visual-surround.nvim" })
     error(msg)
 end
 
 ---@param msg string
 function Util.info(msg)
     -- "\n" for nvim configs that don't use nvim-notify
-    vim.notify("\n" .. msg, vim.log.levels.INFO, { title = "Speedtyper" })
+    vim.notify("\n" .. msg, vim.log.levels.INFO, { title = "visual-surround.nvim" })
 end
 
 ---@param mode string
