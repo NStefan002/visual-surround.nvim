@@ -1,21 +1,36 @@
-local Util = {}
+local M = {}
 ---notify user of an error
 ---@param msg string
-function Util.error(msg)
+function M.error(msg)
     -- "\n" for nvim configs that don't use nvim-notify
     vim.notify("\n" .. msg, vim.log.levels.ERROR, { title = "visual-surround.nvim" })
     error(msg)
 end
 
 ---@param msg string
-function Util.info(msg)
+function M.info(msg)
     -- "\n" for nvim configs that don't use nvim-notify
     vim.notify("\n" .. msg, vim.log.levels.INFO, { title = "visual-surround.nvim" })
 end
 
+---@param char string
+---@return string, string
+function M.get_char_pair(char)
+    if char == "(" or char == ")" then
+        return "(", ")"
+    elseif char == "[" or char == "]" then
+        return "[", "]"
+    elseif char == "{" or char == "}" then
+        return "{", "}"
+    elseif char == "<" or char == ">" then
+        return "<", ">"
+    end
+    return char, char
+end
+
 ---@param mode string
 ---@return { vline_start: integer, vcol_start: integer, vline_end: integer, vcol_end: integer }
-function Util.get_bounds(mode)
+function M.get_bounds(mode)
     local vline_start = vim.fn.line("v")
     local vcol_start = vim.fn.col("v")
     local vline_end = vim.fn.line(".")
@@ -57,18 +72,18 @@ end
 ---@param a number
 ---@param b number
 ---@return boolean
-function Util.equals(a, b)
+function M.equals(a, b)
     return tostring(a) == tostring(b)
 end
 
 ---@param str string
-function Util.trim(str)
+function M.trim(str)
     return str:gsub("^%s+", ""):gsub("%s+$", "")
 end
 
 ---@param str string
 ---@param sep? string
-function Util.split(str, sep)
+function M.split(str, sep)
     sep = sep or "%s" -- whitespace by default
     local t = {}
     for s in string.gmatch(str, "([^" .. sep .. "]+)") do
@@ -79,7 +94,7 @@ end
 
 ---@param str string
 ---@return integer
-function Util.num_of_leading_whitespaces(str)
+function M.num_of_leading_whitespaces(str)
     for i = 1, #str do
         if str:sub(i, i) ~= " " then
             return i - 1
@@ -88,4 +103,4 @@ function Util.num_of_leading_whitespaces(str)
     return #str
 end
 
-return Util
+return M
