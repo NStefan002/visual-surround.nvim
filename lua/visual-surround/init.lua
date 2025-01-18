@@ -66,7 +66,7 @@ function M.surround(char)
     end
 end
 
----@param opts? table
+---@param opts? visual-surround.config
 function M.setup(opts)
     config.setup(opts)
     if config.opts.use_default_keymaps then

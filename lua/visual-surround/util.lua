@@ -29,7 +29,7 @@ function M.get_char_pair(char)
 end
 
 ---@param mode string
----@return { vline_start: integer, vcol_start: integer, vline_end: integer, vcol_end: integer }
+---@return visual-surround.bounds
 function M.get_bounds(mode)
     local vline_start = vim.fn.line("v")
     local vcol_start = vim.fn.col("v")
