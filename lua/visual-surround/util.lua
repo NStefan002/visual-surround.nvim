@@ -1,4 +1,7 @@
+local api = vim.api
+
 local M = {}
+
 ---notify user of an error
 ---@param msg string
 function M.error(msg)
@@ -44,10 +47,10 @@ function M.get_bounds(mode)
     if vline_start > vline_end then
         vline_start, vline_end = vline_end, vline_start
         if mode == "V" then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("o", true, false, true), "x", true)
+            api.nvim_feedkeys(api.nvim_replace_termcodes("o", true, false, true), "x", true)
             vcol_start = 1
             vcol_end = vim.fn.col("$") - 1
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("o", true, false, true), "x", true)
+            api.nvim_feedkeys(api.nvim_replace_termcodes("o", true, false, true), "x", true)
         else
             vcol_start, vcol_end = vcol_end, vcol_start
         end
@@ -76,9 +79,15 @@ function M.equals(a, b)
     return tostring(a) == tostring(b)
 end
 
+---Returns leading whitespace, text, trailing whitespace
 ---@param str string
+---@return string before, string trimmed, string after
 function M.trim(str)
-    return str:gsub("^%s+", ""):gsub("%s+$", "")
+    local before = str:match("^%s*")
+    local trimmed = str:gsub("^%s+", ""):gsub("%s+$", "")
+    local after = str:match("%s*$")
+
+    return before, trimmed, after
 end
 
 ---@param str string
@@ -101,6 +110,11 @@ function M.num_of_leading_whitespaces(str)
         end
     end
     return #str
+end
+
+---Simulates the user pressing a `<Esc>` key
+function M.esc()
+    api.nvim_feedkeys(api.nvim_replace_termcodes("<Esc>", true, false, true), "x", true)
 end
 
 return M

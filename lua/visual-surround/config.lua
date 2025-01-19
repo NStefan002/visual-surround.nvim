@@ -4,6 +4,7 @@ local M = {}
 M.defaults = {
     use_default_keymaps = true,
     surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"', "`" },
+    enable_wrapped_deletion = false,
     exit_visual_mode = true,
 }
 
