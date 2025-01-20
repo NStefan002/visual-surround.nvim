@@ -5,7 +5,10 @@ function Config.get_default_config()
         -- if set to true, the user must manually add keymaps
         use_default_keymaps = true,
         -- will be ignored if use_default_keymaps is set to false
-        surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"', "`" },
+        --
+        -- By default, surrounding for "<" and ">" fallbacks to indentation logic for line-visual mode.
+        surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"', "`", "<", ">" },
+        -- surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"', "`" },
         -- whether to exit visual mode after adding surround
         exit_visual_mode = true,
     }

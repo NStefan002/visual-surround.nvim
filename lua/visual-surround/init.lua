@@ -32,6 +32,23 @@ function Surround.surround(char)
     local opening_char, closing_char = Surround._get_char(char)
     local mode = vim.api.nvim_get_mode().mode
     local bounds = Util.get_bounds(mode)
+    -- early return "<" and ">" for indentation.
+    if mode == "V" and (char == "<" or ">") then
+        -- Get the selected lines. See :help getpos.
+        local start_pos, end_pos = vim.fn.getpos("v")[2], vim.fn.getpos(".")[2]
+        if start_pos > end_pos then
+            start_pos, end_pos = end_pos, start_pos
+        end
+        local cmd = start_pos .. "," .. end_pos .. char
+        -- with vim.v.count we can support keymap like Vjj4<.
+        -- cmdline mode does not provide ways for multiple indentations, we can only loop to do that.
+        local count = math.max(1, vim.v.count)
+        while count > 0 do
+            count = count - 1
+            vim.cmd(cmd)
+        end
+        return
+    end
     if mode == "v" or mode == "V" then
         local lines = vim.api.nvim_buf_get_text(
             0,
