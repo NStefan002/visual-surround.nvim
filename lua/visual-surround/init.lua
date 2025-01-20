@@ -7,9 +7,29 @@ local M = {}
 local function set_keymaps()
     local keys = config.opts.surround_chars
     for _, key in ipairs(keys) do
-        vim.keymap.set("v", key, function()
-            M.surround(key)
-        end, { desc = "[visual-surround] Surround selection with " .. key })
+        if key == "<" or key == ">" then
+            vim.keymap.set("x", key, function()
+                local mode = api.nvim_get_mode().mode
+                -- do not change the default behavior of '<' and '>' in visual-line mode
+                if mode == "V" then
+                    return key
+                else
+                    vim.schedule(function()
+                        M.surround(key)
+                    end)
+                    return "<ignore>"
+                end
+            end, {
+                desc = "[visual-surround] Surround selection with "
+                    .. key
+                    .. " (visual mode and visual block mode)",
+                expr = true,
+            })
+        else
+            vim.keymap.set("v", key, function()
+                M.surround(key)
+            end, { desc = "[visual-surround] Surround selection with " .. key })
+        end
     end
 end
 
