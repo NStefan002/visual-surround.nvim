@@ -85,7 +85,7 @@ end
 function M.trim(str)
     local before = str:match("^%s*")
     local trimmed = str:gsub("^%s+", ""):gsub("%s+$", "")
-    local after = str:match("%s*$")
+    local after = trimmed == "" and "" or str:match("%s*$")
 
     return before, trimmed, after
 end
