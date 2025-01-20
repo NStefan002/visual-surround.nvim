@@ -90,28 +90,6 @@ function M.trim(str)
     return before, trimmed, after
 end
 
----@param str string
----@param sep? string
-function M.split(str, sep)
-    sep = sep or "%s" -- whitespace by default
-    local t = {}
-    for s in string.gmatch(str, "([^" .. sep .. "]+)") do
-        table.insert(t, s)
-    end
-    return t
-end
-
----@param str string
----@return integer
-function M.num_of_leading_whitespaces(str)
-    for i = 1, #str do
-        if str:sub(i, i) ~= " " then
-            return i - 1
-        end
-    end
-    return #str
-end
-
 ---Simulates the user pressing a `<Esc>` key
 function M.esc()
     api.nvim_feedkeys(api.nvim_replace_termcodes("<Esc>", true, false, true), "x", true)
