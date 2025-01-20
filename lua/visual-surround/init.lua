@@ -47,6 +47,8 @@ function Surround.surround(char)
             count = count - 1
             vim.cmd(cmd)
         end
+        -- we stay in visual mode and ignore the `exit_visual_mode` anyway.
+        vim.cmd("normal! " .. start_pos .. "GV" .. end_pos .. "G")
         return
     end
     if mode == "v" or mode == "V" then
