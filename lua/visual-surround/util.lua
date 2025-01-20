@@ -95,4 +95,17 @@ function M.esc()
     api.nvim_feedkeys(api.nvim_replace_termcodes("<Esc>", true, false, true), "x", true)
 end
 
+---Updates the visual selection
+---@param bounds visual-surround.bounds
+---@param mode string
+function M.update_visual_selection(bounds, mode)
+    if mode == "V" then
+        return
+    end
+    M.esc()
+    api.nvim_win_set_cursor(0, { bounds.vline_start, bounds.vcol_start })
+    api.nvim_feedkeys(api.nvim_replace_termcodes(mode, true, false, true), "x", true)
+    api.nvim_win_set_cursor(0, { bounds.vline_end, bounds.vcol_end })
+end
+
 return M
