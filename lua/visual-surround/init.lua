@@ -35,9 +35,9 @@ end
 
 ---@param bounds visual-surround.bounds
 ---@param mode string
----@param opening_char string
----@param closing_char string
-local function add_surround_char(bounds, mode, opening_char, closing_char)
+---@param opening string
+---@param closing string
+local function add_surr(bounds, mode, opening, closing)
     local new_bounds = vim.deepcopy(bounds)
     if mode == "v" or mode == "V" then
         local lines = api.nvim_buf_get_text(
@@ -50,17 +50,19 @@ local function add_surround_char(bounds, mode, opening_char, closing_char)
         )
 
         local leading_spaces, text, trailing_spaces = util.trim(lines[1])
-        lines[1] = leading_spaces .. opening_char .. text .. trailing_spaces
+        lines[1] = leading_spaces .. opening .. text .. trailing_spaces
 
         new_bounds.vcol_start = bounds.vcol_start + api.nvim_strwidth(leading_spaces) - 1
 
         leading_spaces, text, trailing_spaces = util.trim(lines[#lines])
-        lines[#lines] = leading_spaces .. text .. closing_char .. trailing_spaces
+        lines[#lines] = leading_spaces .. text .. closing .. trailing_spaces
 
         if #lines > 1 then
-            new_bounds.vcol_end = api.nvim_strwidth(leading_spaces .. text)
+            new_bounds.vcol_end = api.nvim_strwidth(leading_spaces .. text .. closing) - 1
         else
-            new_bounds.vcol_end = bounds.vcol_start + api.nvim_strwidth(leading_spaces .. text) - 1
+            new_bounds.vcol_end = bounds.vcol_start
+                + api.nvim_strwidth(leading_spaces .. text .. closing)
+                - 2
         end
 
         api.nvim_buf_set_text(
@@ -77,8 +79,8 @@ local function add_surround_char(bounds, mode, opening_char, closing_char)
             local line_mid = line:sub(bounds.vcol_start, bounds.vcol_end)
             local leading_spaces, text, _ = util.trim(line_mid)
             if text ~= "" then
-                line_mid = leading_spaces .. opening_char .. text
-                line_mid = line_mid .. closing_char
+                line_mid = leading_spaces .. opening .. text
+                line_mid = line_mid .. closing
 
                 -- line = start mid end
                 lines[i] = line:sub(1, bounds.vcol_start - 1)
@@ -100,7 +102,9 @@ end
 
 ---@param bounds visual-surround.bounds
 ---@param mode string
-local function delete_surround_char(bounds, mode)
+---@param opening string
+---@param closing string
+local function remove_surr(bounds, mode, opening, closing)
     local new_bounds = vim.deepcopy(bounds)
     if mode == "v" or mode == "V" then
         local lines = api.nvim_buf_get_text(
@@ -113,16 +117,16 @@ local function delete_surround_char(bounds, mode)
         )
 
         local leading_spaces, text, trailing_spaces = util.trim(lines[1])
-        lines[1] = leading_spaces .. text:sub(2) .. trailing_spaces
+        lines[1] = leading_spaces .. text:sub(#opening + 1) .. trailing_spaces
 
         leading_spaces, text, trailing_spaces = util.trim(lines[#lines])
-        lines[#lines] = leading_spaces .. text:sub(1, -2) .. trailing_spaces
+        lines[#lines] = leading_spaces .. text:sub(1, -1 - #closing) .. trailing_spaces
 
         new_bounds.vcol_start = bounds.vcol_start - 1
         if #lines > 1 then
-            new_bounds.vcol_end = bounds.vcol_end - 2
+            new_bounds.vcol_end = bounds.vcol_end - api.nvim_strwidth(closing) - 1
         else
-            new_bounds.vcol_end = bounds.vcol_end - 3
+            new_bounds.vcol_end = bounds.vcol_end - api.nvim_strwidth(opening .. closing) - 1
         end
 
         api.nvim_buf_set_text(
@@ -139,8 +143,8 @@ local function delete_surround_char(bounds, mode)
             local line_mid = line:sub(bounds.vcol_start, bounds.vcol_end)
             local leading_spaces, text, trailing_spaces = util.trim(line_mid)
             if text ~= "" then
-                line_mid = leading_spaces .. text:sub(2)
-                line_mid = line_mid:sub(1, -2) .. trailing_spaces
+                line_mid = leading_spaces .. text:sub(#opening + 1)
+                line_mid = line_mid:sub(1, -1 - #closing) .. trailing_spaces
 
                 -- line = start .. mid .. end
                 lines[i] = line:sub(1, bounds.vcol_start - 1)
@@ -149,21 +153,24 @@ local function delete_surround_char(bounds, mode)
             end
         end
         new_bounds.vcol_start = bounds.vcol_start - 1
-        new_bounds.vcol_end = bounds.vcol_end - 3
+        new_bounds.vcol_end = bounds.vcol_end - api.nvim_strwidth(opening .. closing) - 1
         api.nvim_buf_set_lines(0, bounds.vline_start - 1, bounds.vline_end, true, lines)
     end
 
     util.update_visual_selection(new_bounds, mode)
 end
 
----@param char string
-function M.surround(char)
-    local opening_char, closing_char = util.get_char_pair(char)
+---@param opening string
+---@param closing? string
+function M.surround(opening, closing)
+    if closing == nil or closing == "" then
+        opening, closing = util.get_char_pair(opening)
+    end
     local mode = api.nvim_get_mode().mode
     local bounds = util.get_bounds(mode)
 
     if not config.opts.enable_wrapped_deletion then
-        add_surround_char(bounds, mode, opening_char, closing_char)
+        add_surr(bounds, mode, opening, closing)
 
         if config.opts.exit_visual_mode then
             util.esc()
@@ -182,31 +189,32 @@ function M.surround(char)
             bounds.vcol_end,
             {}
         )
-        local _, first_char, _ = util.trim(lines[1])
-        first_char = first_char:sub(1, 1)
+        local _, opening_surround, _ = util.trim(lines[1])
+        opening_surround = opening_surround:sub(1, #opening)
 
-        local _, last_char, _ = util.trim(lines[#lines])
-        last_char = last_char:sub(-1, -1)
+        local _, closing_surround, _ = util.trim(lines[#lines])
+        closing_surround = closing_surround:sub(-#closing)
 
-        delete_surr = first_char == opening_char and last_char == closing_char
+        delete_surr = opening_surround == opening and closing_surround == closing
     else
         local lines = api.nvim_buf_get_lines(0, bounds.vline_start - 1, bounds.vline_end, true)
         for _, line in ipairs(lines) do
             local _, text, _ = util.trim(line:sub(bounds.vcol_start, bounds.vcol_end))
             if text ~= "" then
-                local first_char = line:sub(bounds.vcol_start, bounds.vcol_start)
-                local last_char = line:sub(bounds.vcol_end, bounds.vcol_end)
+                local opening_surround =
+                    line:sub(bounds.vcol_start, bounds.vcol_start + #opening - 1)
+                local closing_surround = line:sub(bounds.vcol_end - #closing + 1, bounds.vcol_end)
                 delete_surr = delete_surr
-                    and first_char == opening_char
-                    and last_char == closing_char
+                    and opening_surround == opening
+                    and closing_surround == closing
             end
         end
     end
 
     if delete_surr then
-        delete_surround_char(bounds, mode)
+        remove_surr(bounds, mode, opening, closing)
     else
-        add_surround_char(bounds, mode, opening_char, closing_char)
+        add_surr(bounds, mode, opening, closing)
     end
 
     if config.opts.exit_visual_mode then
