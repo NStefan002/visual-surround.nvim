@@ -1,20 +1,6 @@
-# Visual-surround.nvim
-
-**Why another surround plugin?**
-
-The answer is simple: because I only ever used the 'surround visual selection' feature of (btw incredible) plugins such as
-[nvim-surround](https://github.com/kylechui/nvim-surround) or [mini.surround](https://github.com/echasnovski/mini.surround).
-I wanted to create the plugin that does a similar thing to that one vsc\*\*e's feature - highlight text that you want to surround
-with parentheses and just press the `(` or `)` key.
-
-If you want additional functionalities, such as deleting surrounding characters, changing surrounding characters, or some other
-advanced features, check out two of the plugins mentioned above.
+# visual-surround.nvim
 
 ## 📺 Showcase
-
-
-https://github.com/NStefan002/visual-surround.nvim/assets/100767853/32d02d97-b6f7-4763-adc5-5eb9c7419547
-
 
 ## 📋 Installation
 
@@ -27,9 +13,8 @@ https://github.com/NStefan002/visual-surround.nvim/assets/100767853/32d02d97-b6f
         require("visual-surround").setup({
             -- your config
         })
+        -- [optional] custom keymaps
     end,
-    -- or if you don't want to change defaults
-    -- config = true
 }
 ```
 
@@ -42,58 +27,93 @@ use({
         require("visual-surround").setup({
             -- your config
         })
+        -- [optional] custom keymaps
     end,
 })
 ```
 
 ## ⚙ Configuration
 
-<details>
-<summary>Default config</summary>
-
 ```lua
 {
-    -- if set to true, the user must manually add keymaps
+    -- if set to false, the user must manually add keymaps
     use_default_keymaps = true,
     -- will be ignored if use_default_keymaps is set to false
-    surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"', "`" },
+    surround_chars = { "{", "}", "[", "]", "(", ")", "'", '"', "`", "<", ">" },
+    -- delete surroundings when the selection block starts and ends with surroundings
+    enable_wrapped_deletion = false,
     -- whether to exit visual mode after adding surround
     exit_visual_mode = true,
 }
 ```
 
-</details>
+> [!NOTE]
+> `<` and `>` only work in visual (`v`) and visual-block mode
+(`CTRL-V`) to avoid conflicts with the default `<` / `>` in visual-line mode (`V`).
+You can change this by defining a mapping yourself (see **Tips**).
+
+## ⚒️ API
+
+This plugin exposes the `surround` function that should be used in visual mode to surround the selected text.
+The function receives two parameters:
+
+1. `opening` (`string`) -> String that should be placed at the beginning of the selection.
+2. `[optional]` `closing` (`string`) -> String that should be placed at the end
+   of the selection. Do not provide this parameter if you want the `opening`
+   string to be placed at the end as well. (If the `opening` string is any of
+   the characters from `surround_chars`, this function will correctly determine
+   `closing` string.)
 
 ### 👀 Tips
 
 <details>
-<summary>set some additional keymaps</summary>
+<summary>Set some additional keymaps</summary>
 
 ```lua
-vim.keymap.set("v", "s<", function()
-    -- surround selected text with "<>"
-    require("visual-surround").surround("<") -- it's enough to supply only opening or closing char
-end)
+require("visual-surround").setup({
+    use_default_keymaps = true, -- to enable default keymaps
+})
+
+vim.keymap.set("v", "sd", function()
+    require("visual-surround").surround("<div>", "</div>")
+end, { desc = "Wrap selection in a div" })
 ```
+
+Also, take a look at
+[this](https://github.com/NStefan002/nvim_config/blob/main/after/ftplugin/markdown.lua#L22-L28)
+example in my config.
 
 </details>
 
 <details>
-<summary>set new keymaps</summary>
+<summary>Set new keymaps</summary>
 
 ```lua
 require("visual-surround").setup({
     use_default_keymaps = false,
 })
 
-local preffered_mapping_prefix = "s"
+local prefix = "s" -- optional, just an idea if you prefer it this way
 local surround_chars = { "{", "[", "(", "'", '"', "<" }
 local surround = require("visual-surround").surround
 for _, key in pairs(surround_chars) do
-    vim.keymap.set("v", preffered_mapping_prefix .. key, function()
+    vim.keymap.set("v", prefix .. key, function()
         surround(key)
     end, { desc = "[visual-surround] Surround selection with " .. key })
 end
+```
+
+</details>
+
+<details>
+<summary>Prompt for a custom surround string</summary>
+
+```lua
+vim.keymap.set("v", "ss", function()
+    local opening = vim.fn.input("Opening: ")
+    local closing = vim.fn.input("Closing: ") -- leave empty if you want to use opening string for both
+    require("visual-surround").surround(opening, closing)
+end, { desc = "[visual-surround] Surround selection with custom string" })
 ```
 
 </details>
