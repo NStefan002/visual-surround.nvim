@@ -73,10 +73,6 @@ local function add_surround_char(bounds, mode, opening_char, closing_char)
         )
     else
         local lines = api.nvim_buf_get_lines(0, bounds.vline_start - 1, bounds.vline_end, true)
-        -- normalize in V-Block mode.
-        if bounds.vcol_end < bounds.vcol_start then
-            bounds.vcol_start, bounds.vcol_end = bounds.vcol_end, bounds.vcol_start
-        end
         for i, line in ipairs(lines) do
             local line_mid = line:sub(bounds.vcol_start, bounds.vcol_end)
             local leading_spaces, text, _ = util.trim(line_mid)
@@ -139,10 +135,6 @@ local function delete_surround_char(bounds, mode)
         )
     else
         local lines = api.nvim_buf_get_lines(0, bounds.vline_start - 1, bounds.vline_end, true)
-        -- normalize in V-Block mode.
-        if bounds.vcol_end < bounds.vcol_start then
-            bounds.vcol_start, bounds.vcol_end = bounds.vcol_end, bounds.vcol_start
-        end
         for i, line in ipairs(lines) do
             local line_mid = line:sub(bounds.vcol_start, bounds.vcol_end)
             local leading_spaces, text, trailing_spaces = util.trim(line_mid)
