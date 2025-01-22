@@ -2,6 +2,10 @@
 
 ## 📺 Showcase
 
+
+https://github.com/user-attachments/assets/faaa7bd6-0a94-4b4c-af7c-1ae43ef750af
+
+
 ## 📋 Installation
 
 [lazy](https://github.com/folke/lazy.nvim):
