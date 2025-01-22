@@ -2,9 +2,7 @@
 
 ## 📺 Showcase
 
-
-https://github.com/user-attachments/assets/faaa7bd6-0a94-4b4c-af7c-1ae43ef750af
-
+<https://github.com/user-attachments/assets/faaa7bd6-0a94-4b4c-af7c-1ae43ef750af>
 
 ## 📋 Installation
 
