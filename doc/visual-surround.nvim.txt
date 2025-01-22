@@ -16,6 +16,9 @@ Table of Contents                     *visual-surround.nvim-table-of-contents*
 SHOWCASE                  *visual-surround.nvim-visual-surround.nvim-showcase*
 
 
+https://github.com/user-attachments/assets/faaa7bd6-0a94-4b4c-af7c-1ae43ef750af
+
+
 INSTALLATION          *visual-surround.nvim-visual-surround.nvim-installation*
 
 lazy <https://github.com/folke/lazy.nvim>
