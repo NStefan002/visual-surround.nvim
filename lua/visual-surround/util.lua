@@ -55,7 +55,8 @@ function M.get_bounds(mode)
             vcol_start, vcol_end = vcol_end, vcol_start
         end
     end
-    if vcol_start > vcol_end then
+    -- fix the order of the columns if the user selects from bottom right to top left in viusal block mode
+    if mode == api.nvim_replace_termcodes("<c-v>", true, false, true) and vcol_start > vcol_end then
         vcol_start, vcol_end = vcol_end, vcol_start
     end
 
