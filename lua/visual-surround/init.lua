@@ -157,6 +157,8 @@ local function remove_surr(bounds, mode, opening, closing)
         api.nvim_buf_set_lines(0, bounds.vline_start - 1, bounds.vline_end, true, lines)
     end
 
+    new_bounds.vcol_start = math.max(0, new_bounds.vcol_start)
+    new_bounds.vcol_end = math.max(0, new_bounds.vcol_end)
     util.update_visual_selection(new_bounds, mode)
 end
 

@@ -55,15 +55,15 @@ function M.get_bounds(mode)
             vcol_start, vcol_end = vcol_end, vcol_start
         end
     end
+
     -- fix the order of the columns if the user selects from bottom right to top left in viusal block mode
     if mode == api.nvim_replace_termcodes("<c-v>", true, false, true) and vcol_start > vcol_end then
         vcol_start, vcol_end = vcol_end, vcol_start
     end
 
     -- ajust the end column if the cursor is one character after the end of the line (visual mode enables this)
-    if vcol_end == vim.fn.col("$") then
-        vcol_end = vcol_end - 1
-    end
+    local last_line = vim.fn.getline(vline_end)
+    vcol_end = math.min(vcol_end, api.nvim_strwidth(last_line))
 
     return {
         vline_start = vline_start,
