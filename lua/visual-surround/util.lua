@@ -39,30 +39,23 @@ function M.get_bounds(mode)
     local vline_end = vim.fn.line(".")
     local vcol_end = vim.fn.col(".")
 
-    if mode == "V" then
-        vcol_start = 1
-        vcol_end = vim.fn.col("$") - 1
-    end
-
     if vline_start > vline_end then
         vline_start, vline_end = vline_end, vline_start
-        if mode == "V" then
-            api.nvim_feedkeys(api.nvim_replace_termcodes("o", true, false, true), "x", true)
-            vcol_start = 1
-            vcol_end = vim.fn.col("$") - 1
-            api.nvim_feedkeys(api.nvim_replace_termcodes("o", true, false, true), "x", true)
-        else
-            vcol_start, vcol_end = vcol_end, vcol_start
-        end
-    end
-
-    -- fix the order of the columns if the user selects from bottom right to top left in viusal block mode
-    if mode == api.nvim_replace_termcodes("<c-v>", true, false, true) and vcol_start > vcol_end then
         vcol_start, vcol_end = vcol_end, vcol_start
     end
 
-    -- ajust the end column if the cursor is one character after the end of the line (visual mode enables this)
+    if vline_start == vline_end and vcol_start > vcol_end then
+        vcol_start, vcol_end = vcol_end, vcol_start
+    end
+
     local last_line = vim.fn.getline(vline_end)
+    if mode == "V" then
+        vcol_start = 1
+        vcol_end = api.nvim_strwidth(last_line)
+    elseif mode == api.nvim_replace_termcodes("<c-v>", true, false, true) then
+        vcol_start, vcol_end = math.min(vcol_start, vcol_end), math.max(vcol_start, vcol_end)
+    end
+
     vcol_end = math.min(vcol_end, api.nvim_strwidth(last_line))
 
     return {
