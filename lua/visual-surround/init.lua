@@ -26,7 +26,7 @@ local function set_keymaps()
                 expr = true,
             })
         else
-            vim.keymap.set("v", key, function()
+            vim.keymap.set("x", key, function()
                 M.surround(key)
             end, { desc = "[visual-surround] Surround selection with " .. key })
         end
