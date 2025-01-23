@@ -6,6 +6,11 @@ surrounding plugins, it enables users to easily add or remove surrounding
 characters like parentheses, brackets, quotes, and custom strings. All within a
 visual selection.
 
+Since this plugin only works in visual mode, by default, all keymaps are
+one character long. So for example, to surround a selection with parentheses,
+you would press `(` or `)` in visual mode and it's done. Of course, the mappings
+can be customized to your liking.
+
 > [!NOTE]
 > If you want a more feature-rich plugin, check out
 > [nvim-surround](https://github.com/kylechui/nvim-surround) or
