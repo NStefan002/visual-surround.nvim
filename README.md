@@ -1,5 +1,17 @@
 # visual-surround.nvim
 
+Visual surround is a lightweight and flexible Neovim plugin designed to
+simplify text manipulation using surround elements. Inspired by popular
+surrounding plugins, it enables users to easily add or remove surrounding
+characters like parentheses, brackets, quotes, and custom strings. All within a
+visual selection.
+
+> [!NOTE]
+> If you want a more feature-rich plugin, check out
+> [nvim-surround](https://github.com/kylechui/nvim-surround) or
+> [mini.surround](https://github.com/echasnovski/mini.surround),
+> but if you only using these plugins in visual mode, this plugin is for you.
+
 ## 📺 Showcase
 
 <https://github.com/user-attachments/assets/faaa7bd6-0a94-4b4c-af7c-1ae43ef750af>
