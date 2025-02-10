@@ -93,7 +93,7 @@ require("visual-surround").setup({
     use_default_keymaps = true, -- to enable default keymaps
 })
 
-vim.keymap.set("v", "sd", function()
+vim.keymap.set("x", "sd", function()
     require("visual-surround").surround("<div>", "</div>")
 end, { desc = "Wrap selection in a div" })
 ```
@@ -116,7 +116,7 @@ local prefix = "s" -- optional, just an idea if you prefer it this way
 local surround_chars = { "{", "[", "(", "'", '"', "<" }
 local surround = require("visual-surround").surround
 for _, key in pairs(surround_chars) do
-    vim.keymap.set("v", prefix .. key, function()
+    vim.keymap.set("x", prefix .. key, function()
         surround(key)
     end, { desc = "[visual-surround] Surround selection with " .. key })
 end
@@ -128,7 +128,7 @@ end
 <summary>Prompt for a custom surround string</summary>
 
 ```lua
-vim.keymap.set("v", "ss", function()
+vim.keymap.set("x", "ss", function()
     local opening = vim.fn.input("Opening: ")
     local closing = vim.fn.input("Closing: ") -- leave empty if you want to use opening string for both
     require("visual-surround").surround(opening, closing)
