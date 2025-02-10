@@ -1,4 +1,4 @@
-*visual-surround.nvim.txt*   For Neovim >= 0.9.1  Last change: 2025 January 23
+*visual-surround.nvim.txt*  For Neovim >= 0.9.1  Last change: 2025 February 10
 
 ==============================================================================
 Table of Contents                     *visual-surround.nvim-table-of-contents*
@@ -108,7 +108,7 @@ Set some additional keymaps ~
         use_default_keymaps = true, -- to enable default keymaps
     })
     
-    vim.keymap.set("v", "sd", function()
+    vim.keymap.set("x", "sd", function()
         require("visual-surround").surround("<div>", "</div>")
     end, { desc = "Wrap selection in a div" })
 <
@@ -128,7 +128,7 @@ Set new keymaps ~
     local surround_chars = { "{", "[", "(", "'", '"', "<" }
     local surround = require("visual-surround").surround
     for _, key in pairs(surround_chars) do
-        vim.keymap.set("v", prefix .. key, function()
+        vim.keymap.set("x", prefix .. key, function()
             surround(key)
         end, { desc = "[visual-surround] Surround selection with " .. key })
     end
@@ -137,7 +137,7 @@ Set new keymaps ~
 Prompt for a custom surround string ~
 
 >lua
-    vim.keymap.set("v", "ss", function()
+    vim.keymap.set("x", "ss", function()
         local opening = vim.fn.input("Opening: ")
         local closing = vim.fn.input("Closing: ") -- leave empty if you want to use opening string for both
         require("visual-surround").surround(opening, closing)
