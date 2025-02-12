@@ -136,3 +136,5 @@ end, { desc = "[visual-surround] Surround selection with custom string" })
 ```
 
 </details>
+
+For more advanced details on setting up `<` and `>`, see [this issue](https://github.com/NStefan002/visual-surround.nvim/issues/9).
