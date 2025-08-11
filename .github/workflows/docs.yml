@@ -1,9 +1,5 @@
-name: CI
+name: Docs
 on: [push, pull_request]
-
-concurrency:
-  group: github.head_ref
-  cancel-in-progress: true
 
 jobs:
   docs:
@@ -15,13 +11,13 @@ jobs:
         uses: kdheepak/panvimdoc@main
         with:
           vimdoc: visual-surround.nvim
-          version: "Neovim >= 0.9.1"
+          version: "Neovim >= 0.9.0"
           demojify: true
           treesitter: true
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "chore(build): auto-generate vimdoc"
+          commit_message: "chore(docs): auto-generate vimdoc"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
