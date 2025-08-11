@@ -66,14 +66,6 @@ function M.get_bounds(mode)
     }
 end
 
---- HACK: compare two floats
----@param a number
----@param b number
----@return boolean
-function M.equals(a, b)
-    return tostring(a) == tostring(b)
-end
-
 ---Returns leading whitespace, text, trailing whitespace
 ---@param str string
 ---@return string before, string trimmed, string after
