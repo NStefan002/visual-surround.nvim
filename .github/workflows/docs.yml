@@ -11,7 +11,7 @@ jobs:
         uses: kdheepak/panvimdoc@main
         with:
           vimdoc: visual-surround.nvim
-          version: "Neovim >= 0.9.0"
+          version: "Neovim >= 0.11.0"
           demojify: true
           treesitter: true
       - name: Push changes

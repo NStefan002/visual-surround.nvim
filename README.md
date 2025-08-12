@@ -8,7 +8,9 @@ Since this plugin only works in visual mode, by default, all keymaps are one cha
 a selection with parentheses, you would press `(` or `)` in visual mode and it's done. Of course, the mappings can be
 customized to your liking.
 
-> [!NOTE] If you want a more feature-rich plugin, check out [nvim-surround](https://github.com/kylechui/nvim-surround)
+<!-- prettier-ignore -->
+> [!NOTE]
+> If you want a more feature-rich plugin, check out [nvim-surround](https://github.com/kylechui/nvim-surround)
 > or [mini.surround](https://github.com/echasnovski/mini.surround), but if you only using these plugins in visual mode,
 > this plugin is for you.
 
@@ -17,6 +19,10 @@ customized to your liking.
 <https://github.com/user-attachments/assets/faaa7bd6-0a94-4b4c-af7c-1ae43ef750af>
 
 ## 📋 Installation
+
+<!-- prettier-ignore -->
+> [!NOTE]
+> This plugin requires Neovim 0.11 or higher.
 
 [lazy](https://github.com/folke/lazy.nvim):
 
@@ -61,7 +67,9 @@ use({
 }
 ```
 
-> [!NOTE] > `<` and `>` only work in visual (`v`) and visual-block mode (`CTRL-V`) to avoid conflicts with the default
+<!-- prettier-ignore -->
+> [!NOTE]
+> `<` and `>` only work in visual (`v`) and visual-block mode (`CTRL-V`) to avoid conflicts with the default
 > `<` / `>` in visual-line mode (`V`). You can change this by defining a mapping yourself (see **Tips**).
 
 ## ⚒️ API
