@@ -1,0 +1,44 @@
+name: Bug Report
+description: Report a problem in visual-surround.nvim
+labels: [bug]
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        *Before reporting:*
+        - Try to find a way to consistently reproduce the bug
+        - Search existing issues (including closed)
+
+  - type: textarea
+    attributes:
+      label: "Problem"
+      description: "Describe the current behavior. May include screenshots or videos."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Steps to reproduce"
+      description: |
+        - Write the steps to reproduce the behavior, if possible.
+      placeholder: |
+        1. ...
+        2. ...
+        ...
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: "Expected behavior"
+      description: "Describe the behavior you expect or leave this field empty if it's very obvious."
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: "Neovim version (`nvim -v`)"
+      placeholder: "NVIM v0.11.3"
+    validations:
+      required: true
