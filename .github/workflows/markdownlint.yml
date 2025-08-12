@@ -11,4 +11,3 @@ jobs:
       with:
         globs: |
           README.md
-          CONTRIBUTING.md
