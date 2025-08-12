@@ -1,21 +1,16 @@
 # visual-surround.nvim
 
-Visual surround is a lightweight and flexible Neovim plugin designed to
-simplify text manipulation using surround elements. Inspired by popular
-surrounding plugins, it enables users to easily add or remove surrounding
-characters like parentheses, brackets, quotes, and custom strings. All within a
-visual selection.
+Visual surround is a lightweight and flexible Neovim plugin designed to simplify text manipulation using surround
+elements. Inspired by popular surrounding plugins, it enables users to easily add or remove surrounding characters like
+parentheses, brackets, quotes, and custom strings. All within a visual selection.
 
-Since this plugin only works in visual mode, by default, all keymaps are
-one character long. So for example, to surround a selection with parentheses,
-you would press `(` or `)` in visual mode and it's done. Of course, the mappings
-can be customized to your liking.
+Since this plugin only works in visual mode, by default, all keymaps are one character long. So for example, to surround
+a selection with parentheses, you would press `(` or `)` in visual mode and it's done. Of course, the mappings can be
+customized to your liking.
 
-> [!NOTE]
-> If you want a more feature-rich plugin, check out
-> [nvim-surround](https://github.com/kylechui/nvim-surround) or
-> [mini.surround](https://github.com/echasnovski/mini.surround),
-> but if you only using these plugins in visual mode, this plugin is for you.
+> [!NOTE] If you want a more feature-rich plugin, check out [nvim-surround](https://github.com/kylechui/nvim-surround)
+> or [mini.surround](https://github.com/echasnovski/mini.surround), but if you only using these plugins in visual mode,
+> this plugin is for you.
 
 ## 📺 Showcase
 
@@ -66,22 +61,18 @@ use({
 }
 ```
 
-> [!NOTE]
-> `<` and `>` only work in visual (`v`) and visual-block mode
-(`CTRL-V`) to avoid conflicts with the default `<` / `>` in visual-line mode (`V`).
-You can change this by defining a mapping yourself (see **Tips**).
+> [!NOTE] > `<` and `>` only work in visual (`v`) and visual-block mode (`CTRL-V`) to avoid conflicts with the default
+> `<` / `>` in visual-line mode (`V`). You can change this by defining a mapping yourself (see **Tips**).
 
 ## ⚒️ API
 
-This plugin exposes the `surround` function that should be used in visual mode to surround the selected text.
-The function receives two parameters:
+This plugin exposes the `surround` function that should be used in visual mode to surround the selected text. The
+function receives two parameters:
 
 1. `opening` (`string`) -> String that should be placed at the beginning of the selection.
-2. `[optional]` `closing` (`string`) -> String that should be placed at the end
-   of the selection. Do not provide this parameter if you want the `opening`
-   string to be placed at the end as well. (If the `opening` string is any of
-   the characters from `surround_chars`, this function will correctly determine
-   `closing` string.)
+2. `[optional]` `closing` (`string`) -> String that should be placed at the end of the selection. Do not provide this
+   parameter if you want the `opening` string to be placed at the end as well. (If the `opening` string is any of the
+   characters from `surround_chars`, this function will correctly determine `closing` string.)
 
 ### 👀 Tips
 
@@ -98,8 +89,7 @@ vim.keymap.set("x", "sd", function()
 end, { desc = "Wrap selection in a div" })
 ```
 
-Also, take a look at
-[this](https://github.com/NStefan002/nvim_config/blob/main/after/ftplugin/markdown.lua#L22-L28)
+Also, take a look at [this](https://github.com/NStefan002/nvim_config/blob/main/after/ftplugin/markdown.lua#L22-L28)
 example in my config.
 
 </details>
@@ -137,4 +127,5 @@ end, { desc = "[visual-surround] Surround selection with custom string" })
 
 </details>
 
-For more advanced details on setting up `<` and `>`, see [this issue](https://github.com/NStefan002/visual-surround.nvim/issues/9).
+For more advanced details on setting up `<` and `>`, see
+[this issue](https://github.com/NStefan002/visual-surround.nvim/issues/9).
