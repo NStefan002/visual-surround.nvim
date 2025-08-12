@@ -82,9 +82,9 @@ CONFIGURATION        *visual-surround.nvim-visual-surround.nvim-configuration*
 <
 
 
-  [!NOTE] `<` and `>` only work in visual (`v`) and visual-block mode (`CTRL-V`)
-  to avoid conflicts with the default `<` / `>` in visual-line mode (`V`). You
-  can change this by defining a mapping yourself (see **Tips**).
+  [!NOTE] > `<` and `>` only work in visual (`v`) and visual-block mode
+  (`CTRL-V`) to avoid conflicts with the default `<` / `>` in visual-line mode
+  (`V`). You can change this by defining a mapping yourself (see **Tips**).
 
 API                            *visual-surround.nvim-visual-surround.nvim-api*
 
@@ -92,11 +92,9 @@ This plugin exposes the `surround` function that should be used in visual mode
 to surround the selected text. The function receives two parameters:
 
 1. `opening` (`string`) -> String that should be placed at the beginning of the selection.
-2. `[optional]` `closing` (`string`) -> String that should be placed at the end
-of the selection. Do not provide this parameter if you want the `opening`
-string to be placed at the end as well. (If the `opening` string is any of
-the characters from `surround_chars`, this function will correctly determine
-`closing` string.)
+2. `[optional]` `closing` (`string`) -> String that should be placed at the end of the selection. Do not provide this
+parameter if you want the `opening` string to be placed at the end as well. (If the `opening` string is any of the
+characters from `surround_chars`, this function will correctly determine `closing` string.)
 
 
 TIPS ~
