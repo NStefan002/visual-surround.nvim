@@ -39,64 +39,65 @@ end
 ---@param closing string
 local function add_surr(bounds, mode, opening, closing)
     local new_bounds = vim.deepcopy(bounds)
+
+    bounds.vline_start = bounds.vline_start - 1
+    bounds.vcol_start = bounds.vcol_start - 1
+    bounds.vline_end = bounds.vline_end - 1
+    bounds.vcol_end = bounds.vcol_end
+
     if mode == "v" or mode == "V" then
-        local lines = api.nvim_buf_get_text(
-            0,
-            bounds.vline_start - 1,
-            bounds.vcol_start - 1,
-            bounds.vline_end - 1,
-            bounds.vcol_end,
-            {}
-        )
-
-        local leading_spaces, text, trailing_spaces = util.trim(lines[1])
-        lines[1] = leading_spaces .. opening .. text .. trailing_spaces
-
-        new_bounds.vcol_start = bounds.vcol_start + api.nvim_strwidth(leading_spaces) - 1
-
-        leading_spaces, text, trailing_spaces = util.trim(lines[#lines])
-        lines[#lines] = leading_spaces .. text .. closing .. trailing_spaces
-
-        if #lines > 1 then
-            new_bounds.vcol_end = api.nvim_strwidth(leading_spaces .. text .. closing) - 1
-        else
-            new_bounds.vcol_end = bounds.vcol_start
-                + api.nvim_strwidth(leading_spaces .. text .. closing)
-                - 2
-        end
-
+        -- insert closing first so that the column indices don't change
         api.nvim_buf_set_text(
             0,
-            bounds.vline_start - 1,
-            bounds.vcol_start - 1,
-            bounds.vline_end - 1,
+            bounds.vline_end,
             bounds.vcol_end,
-            lines
+            bounds.vline_end,
+            bounds.vcol_end,
+            { closing }
+        )
+
+        -- insert opening
+        api.nvim_buf_set_text(
+            0,
+            bounds.vline_start,
+            bounds.vcol_start,
+            bounds.vline_start,
+            bounds.vcol_start,
+            { opening }
         )
     else
-        local lines = api.nvim_buf_get_lines(0, bounds.vline_start - 1, bounds.vline_end, true)
-        for i, line in ipairs(lines) do
-            local line_mid = line:sub(bounds.vcol_start, bounds.vcol_end)
-            local leading_spaces, text, _ = util.trim(line_mid)
+        for line = bounds.vline_start, bounds.vline_end do
+            -- skip empty (or whitespace-only) lines
+            local line_text = api.nvim_buf_get_lines(0, line, line + 1, true)[1]
+            local _, text, _ = util.trim(line_text:sub(bounds.vcol_start + 1, bounds.vcol_end))
+
             if text ~= "" then
-                line_mid = leading_spaces .. opening .. text
-                line_mid = line_mid .. closing
+                -- insert closing first so that the column indices don't change
+                api.nvim_buf_set_text(0, line, bounds.vcol_end, line, bounds.vcol_end, { closing })
 
-                -- line = start mid end
-                lines[i] = line:sub(1, bounds.vcol_start - 1)
-                    .. line_mid
-                    .. line:sub(bounds.vcol_end + 1)
-
-                new_bounds.vcol_start = api.nvim_strwidth(line:sub(1, bounds.vcol_start - 1))
-                new_bounds.vcol_end = api.nvim_strwidth(
-                    line:sub(1, bounds.vcol_start - 1) .. line_mid
-                ) - 1
+                -- insert opening
+                api.nvim_buf_set_text(
+                    0,
+                    line,
+                    bounds.vcol_start,
+                    line,
+                    bounds.vcol_start,
+                    { opening }
+                )
             end
         end
-
-        api.nvim_buf_set_lines(0, bounds.vline_start - 1, bounds.vline_end, true, lines)
     end
 
+    new_bounds.vcol_start = math.max(new_bounds.vcol_start - 1, 0)
+    new_bounds.vcol_end = new_bounds.vcol_end + #closing
+    if
+        bounds.vline_start ~= bounds.vline_end
+        and mode ~= api.nvim_replace_termcodes("<c-v>", true, false, true)
+    then
+        new_bounds.vcol_end = new_bounds.vcol_end - 1
+    else
+        new_bounds.vcol_end = new_bounds.vcol_end + #opening - 1
+    end
     util.update_visual_selection(new_bounds, mode)
 end
 
@@ -106,59 +107,72 @@ end
 ---@param closing string
 local function remove_surr(bounds, mode, opening, closing)
     local new_bounds = vim.deepcopy(bounds)
+
+    bounds.vline_start = bounds.vline_start - 1
+    bounds.vcol_start = bounds.vcol_start - 1
+    bounds.vline_end = bounds.vline_end - 1
+    bounds.vcol_end = bounds.vcol_end
+
     if mode == "v" or mode == "V" then
-        local lines = api.nvim_buf_get_text(
+        api.nvim_buf_set_text(
             0,
-            bounds.vline_start - 1,
-            bounds.vcol_start - 1,
-            bounds.vline_end - 1,
+            bounds.vline_end,
+            bounds.vcol_end - #closing,
+            bounds.vline_end,
             bounds.vcol_end,
             {}
         )
 
-        local leading_spaces, text, trailing_spaces = util.trim(lines[1])
-        lines[1] = leading_spaces .. text:sub(#opening + 1) .. trailing_spaces
-
-        leading_spaces, text, trailing_spaces = util.trim(lines[#lines])
-        lines[#lines] = leading_spaces .. text:sub(1, -1 - #closing) .. trailing_spaces
-
-        new_bounds.vcol_start = bounds.vcol_start - 1
-        if #lines > 1 then
-            new_bounds.vcol_end = bounds.vcol_end - api.nvim_strwidth(closing) - 1
-        else
-            new_bounds.vcol_end = bounds.vcol_end - api.nvim_strwidth(opening .. closing) - 1
-        end
-
         api.nvim_buf_set_text(
             0,
-            bounds.vline_start - 1,
-            bounds.vcol_start - 1,
-            bounds.vline_end - 1,
-            bounds.vcol_end,
-            lines
+            bounds.vline_start,
+            bounds.vcol_start,
+            bounds.vline_start,
+            bounds.vcol_start + #opening,
+            {}
         )
     else
-        local lines = api.nvim_buf_get_lines(0, bounds.vline_start - 1, bounds.vline_end, true)
-        for i, line in ipairs(lines) do
-            local line_mid = line:sub(bounds.vcol_start, bounds.vcol_end)
-            local leading_spaces, text, trailing_spaces = util.trim(line_mid)
-            if text ~= "" then
-                line_mid = leading_spaces .. text:sub(#opening + 1)
-                line_mid = line_mid:sub(1, -1 - #closing) .. trailing_spaces
+        for line = bounds.vline_start, bounds.vline_end do
+            -- skip empty (or whitespace-only) lines
+            local line_text = api.nvim_buf_get_lines(0, line, line + 1, true)[1]
+            local _, text, _ = util.trim(line_text:sub(bounds.vcol_start + 1, bounds.vcol_end))
 
-                -- line = start .. mid .. end
-                lines[i] = line:sub(1, bounds.vcol_start - 1)
-                    .. line_mid
-                    .. line:sub(bounds.vcol_end + 1)
+            if text ~= "" then
+                api.nvim_buf_set_text(
+                    0,
+                    line,
+                    bounds.vcol_end - #closing,
+                    line,
+                    bounds.vcol_end,
+                    {}
+                )
+
+                api.nvim_buf_set_text(
+                    0,
+                    line,
+                    bounds.vcol_start,
+                    line,
+                    bounds.vcol_start + #opening,
+                    {}
+                )
             end
         end
-        new_bounds.vcol_start = bounds.vcol_start - 1
-        new_bounds.vcol_end = bounds.vcol_end - api.nvim_strwidth(opening .. closing) - 1
-        api.nvim_buf_set_lines(0, bounds.vline_start - 1, bounds.vline_end, true, lines)
     end
 
-    new_bounds.vcol_start = math.max(0, new_bounds.vcol_start)
-    new_bounds.vcol_end = math.max(0, new_bounds.vcol_end)
+    new_bounds.vcol_start = new_bounds.vcol_start - 1
+    new_bounds.vcol_end = new_bounds.vcol_end - #closing
+    if
+        bounds.vline_start ~= bounds.vline_end
+        and mode ~= api.nvim_replace_termcodes("<c-v>", true, false, true)
+    then
+        new_bounds.vcol_end = new_bounds.vcol_end - 1
+    else
+        new_bounds.vcol_end = new_bounds.vcol_end - #opening - 1
+    end
+
+    new_bounds.vcol_start = math.max(new_bounds.vcol_start, 0)
+    new_bounds.vcol_end = math.max(new_bounds.vcol_end, 0)
+
     util.update_visual_selection(new_bounds, mode)
 end
 
@@ -169,6 +183,7 @@ function M.surround(opening, closing)
         opening, closing = util.get_char_pair(opening)
     end
     local mode = api.nvim_get_mode().mode
+    util.esc() -- exit visual mode to avoid issues with getting bounds
     local bounds = util.get_bounds(mode)
 
     if not config.opts.enable_wrapped_deletion then
