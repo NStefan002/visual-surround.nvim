@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/NStefan002/visual-surround.nvim/compare/v1.0.0...v1.0.1) (2025-09-25)
+
+
+### Bug Fixes
+
+* support surrounding unicode characters ([ebe5bce](https://github.com/NStefan002/visual-surround.nvim/commit/ebe5bcefa0a389c7af750e13d35bdc9d281941aa)), closes [#15](https://github.com/NStefan002/visual-surround.nvim/issues/15)
+
 ## 1.0.0 (2025-08-12)
 
 
