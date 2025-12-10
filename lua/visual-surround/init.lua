@@ -26,6 +26,12 @@ local function set_keymaps()
                 expr = true,
             })
         else
+            -- ignore key map in select mode
+            local mode = api.nvim_get_mode().mode
+            if mode == "s" or mode == "S" then
+                return "<ignore>"
+            end
+
             vim.keymap.set("x", key, function()
                 M.surround(key)
             end, { desc = "[visual-surround] Surround selection with " .. key })
